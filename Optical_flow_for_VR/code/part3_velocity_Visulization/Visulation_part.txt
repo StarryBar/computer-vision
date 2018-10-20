@@ -1,0 +1,15 @@
+   
+ Output
+motion 	       Function
+-45          Flat shading
+0        Exponential Square Fog
+45            No Effect
+90            Add Shadow
+vt-90   Point light o90
+vt-45       Spot light on
+vt45     Multi Light effect
+vt90      Wire Frame
+hz-90      Fog Off
+hz-45        Linear Fog
+hz45     Exponential Fog
+hz90    Transparent Shadow

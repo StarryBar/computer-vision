@@ -1,0 +1,59 @@
+in vec4 color;
+in vec4 position;
+in vec2 textCoord;
+out vec4 fColor;
+
+#define NO_FOG			 2048
+#define EXPONENTIAL		 1024 
+#define LINEAR			  512
+#define EXPONENTIA_SQUARE 256
+
+uniform mat4 model_view;
+uniform float t;
+uniform int is_shadow;
+uniform int is_floor;
+uniform int is_sphere;
+uniform int is_axis;
+uniform int is_floor_texture_map;
+uniform int is_sphere_texture_map;
+uniform int FOG_MODE;
+uniform sampler2D texture_2D, texture_1D;
+
+
+vec4 fog_color = vec4(0.7, 0.7, 0.7, 0.5);
+vec4 shadow_color=vec4(0.25, 0.25, 0.25, 0.65);
+
+void main() 
+{ 
+    vec4 pos;
+    float density = 0.09;
+    pos=position;
+    float start = 0.0, end = 18.0;
+    float f;
+    switch(FOG_MODE)
+    {
+        case LINEAR:
+            f = (end - length(pos.xyz))/(end-start);
+            break;
+        case EXPONENTIAL:
+            f = 1.0/exp(density*length(pos.xyz));
+             break;
+        case EXPONENTIA_SQUARE:
+            f= 1.0/pow(exp(density*length(pos.xyz)),2.0);
+            break;
+        case NO_FOG:
+            f = 1;
+            break;
+    }
+    
+    vec4 c;
+    //texture(texture_2D,textCoord)*
+        c = color;
+
+    if(is_shadow==0)
+        fColor = mix(fog_color,c, clamp(f,0,1));
+    else
+        fColor =mix(fog_color,shadow_color, clamp(f,0,1));
+
+} 
+
